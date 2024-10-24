@@ -1,0 +1,80 @@
+<div class="login-page">
+    <header>
+      <div class="logo">
+        <img src="assets/logo.png" alt="Young Miracles Logo" />
+      </div>
+      <nav>
+        <a href="#">Nosotros</a>
+        <a href="#">Servicios</a>
+        <a href="#">Crear una cuenta</a>
+        <a href="#">Contáctanos</a>
+        <a href="#" class="btn-login">Iniciar Sesión</a>
+      </nav>
+    </header>
+  
+    <div class="main-content">
+      <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form #loginForm="ngForm" (ngSubmit)="login()" novalidate>
+          <div class="form-group">
+            <label for="correo">Usuario</label>
+            <input
+              type="email"
+              id="correo"
+              name="correo"
+              [(ngModel)]="correo"
+              class="form-control"
+              required
+              placeholder="Ingresa tu correo"
+              aria-describedby="correoHelp"
+            />
+            <div *ngIf="loginForm.submitted && !loginForm.controls['correo']?.valid" class="error-message">
+              El correo es requerido.
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input
+              type="password"
+              id="contrasena"
+              name="contrasena"
+              [(ngModel)]="contrasena"
+              class="form-control"
+              required
+              placeholder="Ingresa tu contraseña"
+            />
+            <div *ngIf="loginForm.submitted && !loginForm.controls['contrasena']?.valid" class="error-message">
+              La contraseña es requerida.
+            </div>
+          </div>
+  
+          <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary">
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
+  
+      <!-- Imagen a la derecha -->
+      <div class="image-container">
+        <img src="login-image.webp" alt="Perfiles de Integrantes" />
+      </div>
+    </div>
+  
+    <!-- Pie de página -->
+    <footer>
+      <div class="footer-section">
+        <h4>INFORMACIÓN</h4>
+        <p>Nosotros<br />Mi cuenta<br />Perfil de empresa<br />FAQs<br />Contáctanos</p>
+      </div>
+      <div class="footer-section">
+        <h4>POLÍTICA</h4>
+        <p>Términos y condiciones<br />Política de privacidad</p>
+      </div>
+      <div class="footer-section">
+        <h4>SÍGUENOS</h4>
+        <p>Facebook<br />Instagram<br />YouTube<br />TikTok</p>
+      </div>
+    </footer>
+  </div>
+  
