@@ -1,12 +1,33 @@
 import { Component } from '@angular/core';
-import { FeatherIconsModule } from '../../../utils/feather-icons.module';
+import {CommonModule} from '@angular/common';
 @Component({
   selector: 'app-footer',
-  standalone: true,
-  imports: [FeatherIconsModule],
+  imports: [CommonModule],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrls: ['./footer.component.css'],
+  standalone: true
 })
 export class FooterComponent {
-  currentYear: number = new Date().getFullYear();
+  currentYear = new Date().getFullYear();
+
+  quickLinks = [
+    { label: 'Inicio', link: '#' },
+    { label: 'Nosotros', link: '#' },
+    { label: 'Servicios', link: '#' },
+    { label: 'Contacto', link: '#' }
+  ];
+
+  services = [
+    { label: 'Atención domiciliaria', link: '#' },
+    { label: 'Productos médicos', link: '#' },
+    { label: 'Consultas en línea', link: '#' },
+    { label: 'Programas de bienestar', link: '#' }
+  ];
+
+  socialMedia = [
+    { icon: 'facebook', link: '#', label: 'Facebook' },
+    { icon: 'twitter', link: '#', label: 'Twitter' },
+    { icon: 'instagram', link: '#', label: 'Instagram' },
+    { icon: 'linkedin', link: '#', label: 'LinkedIn' }
+  ];
 }
