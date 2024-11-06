@@ -1,80 +1,68 @@
-<div class="login-page">
-    <header>
-      <div class="logo">
-        <img src="assets/logo.png" alt="Young Miracles Logo" />
-      </div>
-      <nav>
-        <a href="#">Nosotros</a>
-        <a href="#">Servicios</a>
-        <a href="#">Crear una cuenta</a>
-        <a href="#">Contáctanos</a>
-        <a href="#" class="btn-login">Iniciar Sesión</a>
-      </nav>
-    </header>
-  
-    <div class="main-content">
-      <div class="login-container">
-        <h2>Iniciar Sesión</h2>
-        <form #loginForm="ngForm" (ngSubmit)="login()" novalidate>
-          <div class="form-group">
-            <label for="correo">Usuario</label>
-            <input
-              type="email"
-              id="correo"
-              name="correo"
-              [(ngModel)]="correo"
-              class="form-control"
-              required
-              placeholder="Ingresa tu correo"
-              aria-describedby="correoHelp"
-            />
-            <div *ngIf="loginForm.submitted && !loginForm.controls['correo']?.valid" class="error-message">
-              El correo es requerido.
-            </div>
-          </div>
-  
-          <div class="form-group">
-            <label for="contrasena">Contraseña</label>
-            <input
-              type="password"
-              id="contrasena"
-              name="contrasena"
-              [(ngModel)]="contrasena"
-              class="form-control"
-              required
-              placeholder="Ingresa tu contraseña"
-            />
-            <div *ngIf="loginForm.submitted && !loginForm.controls['contrasena']?.valid" class="error-message">
-              La contraseña es requerida.
-            </div>
-          </div>
-  
-          <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary">
-            Iniciar Sesión
-          </button>
-        </form>
-      </div>
-  
-      <!-- Imagen a la derecha -->
-      <div class="image-container">
-        <img src="login-image.webp" alt="Perfiles de Integrantes" />
-      </div>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-20 h-20 bg-blue-200 rounded-full opacity-50 transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-0 w-32 h-32 bg-green-200 rounded-full opacity-50 transform translate-x-1/3 translate-y-1/3"></div>
+    <div class="absolute top-1/2 left-1/2 w-16 h-16 bg-yellow-200 rounded-full opacity-50 transform -translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="text-center relative z-10">
+      <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+        Iniciar sesión en su cuenta
+      </h2>
+      <p class="mt-2 text-sm text-gray-600">
+        O
+        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+          regístrese para una nueva cuenta
+        </a>
+      </p>
     </div>
-  
-    <!-- Pie de página -->
-    <footer>
-      <div class="footer-section">
-        <h4>INFORMACIÓN</h4>
-        <p>Nosotros<br />Mi cuenta<br />Perfil de empresa<br />FAQs<br />Contáctanos</p>
+    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="email-address" class="sr-only">Correo electrónico</label>
+          <input id="email-address" name="email" type="email" formControlName="email" required
+                 class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                 placeholder="Correo electrónico">
+        </div>
+        <div>
+          <label for="password" class="sr-only">Contraseña</label>
+          <input id="password" name="password" type="password" formControlName="password" required
+                 class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                 placeholder="Contraseña">
+        </div>
       </div>
-      <div class="footer-section">
-        <h4>POLÍTICA</h4>
-        <p>Términos y condiciones<br />Política de privacidad</p>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox"
+                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+          <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+            Recuérdame
+          </label>
+        </div>
+
+        <div class="text-sm">
+          <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+            ¿Olvidó su contraseña?
+          </a>
+        </div>
       </div>
-      <div class="footer-section">
-        <h4>SÍGUENOS</h4>
-        <p>Facebook<br />Instagram<br />YouTube<br />TikTok</p>
+
+      <div>
+        <button type="submit" [disabled]="isLoading || !loginForm.valid"
+                class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
+          </span>
+          {{ isLoading ? 'Iniciando sesión...' : 'Iniciar sesión' }}
+        </button>
       </div>
-    </footer>
+    </form>
+
+    <div *ngIf="error" class="mt-4 text-center text-sm text-red-600">
+      {{ error }}
+    </div>
   </div>
-  
+</div>

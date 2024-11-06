@@ -1,39 +1,54 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../../core/service/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../core/service/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
-export default class LoginComponent {
-  correo:string=""
-  contrasena:string=""
+export default class LoginComponent{
+  loginForm: FormGroup;
+  error: string = '';
+  isLoading: boolean = false;
 
-  constructor(private authService:AuthService, private router:Router){
-
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
   }
-  login(): void {
-    this.authService.login(this.correo, this.contrasena).subscribe({
-      next: (response)=> {
-        const token = response.token;
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const role = payload.role;
-        /*
-        if(role === 'admin') {
-          this.router.navigate(['/dashboard'])
-        }else {
-          this.router.navigate(['/profile'])
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.error = '';
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).subscribe({
+        next: (response) => {
+          if (response.token) {
+            localStorage.setItem('jwtToken', response.token);
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.error = 'Login failed. Please check your credentials.';
+          }
+        },
+        error: (err) => {
+          this.error = 'An error occurred. Please try again.';
+          console.error('Login error:', err);
+        },
+        complete: () => {
+          this.isLoading = false;
         }
-        */
-      },
-      error: (err) => console.error('Login failed', err)
-    })
+      });
+    }
   }
-
 }
