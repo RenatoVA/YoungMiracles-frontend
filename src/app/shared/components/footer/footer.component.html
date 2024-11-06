@@ -2,19 +2,19 @@
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
       <div>
-        <h3 class="mb-4 text-lg font-semibold">Young Miracles</h3>
+        <h4 class="mb-4 text-lg font-semibold custom-secondary-text">Young Miracles</h4>
         <p class="text-sm text-gray-600">Ayudando a otros desde 2023</p>
       </div>
       <div>
-        <h4 class="mb-4 text-sm font-semibold uppercase">Enlaces rápidos</h4>
+        <h5 class="mb-4 text-sm font-semibold uppercase custom-secondary-text">Enlaces rápidos</h5>
         <ul class="space-y-2">
           <li *ngFor="let link of quickLinks">
-            <a [href]="link.link" class="text-sm text-gray-600 hover:text-blue-600">{{ link.label }}</a>
+            <a [href]="link.link" class="text-sm sss hover:text-blue-600">{{ link.label }}</a>
           </li>
         </ul>
       </div>
       <div>
-        <h4 class="mb-4 text-sm font-semibold uppercase">Servicios</h4>
+        <h5 class="mb-4 text-sm font-semibold uppercase custom-secondary-text">Servicios</h5>
         <ul class="space-y-2">
           <li *ngFor="let service of services">
             <a [href]="service.link" class="text-sm text-gray-600 hover:text-blue-600">{{ service.label }}</a>
@@ -22,8 +22,8 @@
         </ul>
       </div>
       <div>
-        <h4 class="mb-4 text-sm font-semibold uppercase">Contáctanos</h4>
-        <p class="mb-2 text-sm text-gray-600">Email: info"&#64;"youngmiracles.com</p>
+        <h5 class="mb-4 text-sm font-semibold uppercase custom-secondary-text">Contáctanos</h5>
+        <p class="mb-2 text-sm text-gray-600">Email: info&#64;youngmiracles.com</p>
         <p class="mb-4 text-sm text-gray-600">Teléfono: (123) 456-7890</p>
         <div class="flex space-x-4">
           <a *ngFor="let social of socialMedia" [href]="social.link" class="text-gray-600 hover:text-blue-600">
