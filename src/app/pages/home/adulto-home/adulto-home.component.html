@@ -1,1 +1,87 @@
-<p>adulto-home works!</p>
+<header class="header">
+    <div class="logo">
+        <img src="logo.png" alt="Logo Young Miracles">
+        <span>Young Miracles</span>
+    </div>
+    <nav class="navigation">
+        <a href="#perfil">Perfil</a>
+        <a href="#mis-sesiones">Mis Sesiones</a>
+        <a href="#configuracion">Configuración</a>
+    </nav>
+ </header>
+ 
+
+ <main class="flex-1">
+    <div class="layout-container">
+        <!-- sesiones reservadas -->
+        <div class="section sesiones-section">
+          <h3>Sesiones Reservadas</h3>
+          <div class="session-list">
+            <div class="session" *ngFor="let session of reservedSessions">
+              <p>Cliente: {{ session.cliente }}</p>
+              <p>Fecha: {{ session.fecha }}</p>
+              <p>Hora: {{ session.hora }}</p>
+              <p>Especialista: {{ session.especialista }}</p>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-4" routerLink="/schedule-session">
+            Añadir nueva sesión
+          </button>
+        </div>
+      </div>
+  
+      <!--recomendaciones saludables -->
+      <div class="section recetas-section">
+        <h3>Recomendaciones Saludables</h3>
+        <div class="recommendations-list">
+          <div class="recommendation" *ngFor="let recipe of healthyRecipes">
+            <h4>{{ recipe.titulo }}</h4>
+            <p>{{ recipe.descripcion }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Sección de videos -->
+      <div class="section videos-section">
+        <h3>Recetas Saludables en Video</h3>
+        <div class="video-container">
+            <iframe
+            width="100%"
+            height="250"
+            src="https://www.youtube.com/embed/l_oDqT5oS1w"
+            title="Receta Saludable"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <iframe
+            width="100%"
+            height="250"
+            src="https://www.youtube.com/embed/0CpvuHjPVOM"
+            title="Receta Saludable"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <iframe
+            width="100%"
+            height="250"
+            src="https://www.youtube.com/embed/-AhuJP3EsCs"
+            title="Receta Saludable"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+  </main>
+
+  <footer class="mt-8 border-t border-gray-200 pt-8 text-center">
+    <div class="mt-8 border-t border-gray-200 pt-8 text-center">
+      <p class="text-sm text-gray-600">
+        © {{ currentYear }} Young Miracles. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+  
+ 

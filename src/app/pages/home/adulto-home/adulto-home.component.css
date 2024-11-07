@@ -1,0 +1,115 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+ }
+ .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+ }
+ .logo img {
+    height: 40px;
+ }
+ .navigation a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 16px;
+ }
+ .navigation a:hover {
+    text-decoration: underline;
+ }
+ 
+ .main-content {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+ }
+ .sessions, .healthy-recipes {
+    margin-bottom: 30px;
+ }
+ .sessions h2, .healthy-recipes h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+ }
+ .session-list {
+    list-style: none;
+    padding: 0;
+ }
+ .session-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ }
+ .session-item p {
+    margin: 0;
+    font-weight: bold;
+ }
+ .session-item span {
+    display: block;
+    color: #6c757d;
+    font-size: 14px;
+ }
+ 
+ /* Estilo para el feed de recetas */
+ .healthy-recipes {
+    text-align: center;
+ }
+ .recipe-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+ }
+ .recipe-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+ }
+ .recipe-card p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+ }
+ .view-recipe-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+ }
+ .view-recipe-btn:hover {
+    background-color: #218838;
+ }
+ 
+ .layout-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .sesiones-section, .recetas-section {
+    flex: 2;
+  }
+  
+  .videos-section {
+    flex: 1;
+    max-width: 300px; 
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .video-container iframe {
+    width: 100%;
+    border-radius: 10px;
+  }
+  

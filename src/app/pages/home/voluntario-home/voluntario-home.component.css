@@ -1,0 +1,49 @@
+.menu-container {
+    background-color: #f9fafb;
+    color: #374151;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .header-text {
+    color: #27C4C2;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  .session-list, .request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .session, .request {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 4px;
+  }
+  
+  .btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    border-radius: 3px;
+  }
+  
+  .accept-btn {
+    background-color: #27C4C2;
+    color: white;
+    margin-right: 5px;
+  }
+  
+  .reject-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
