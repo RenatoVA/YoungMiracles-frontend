@@ -13,11 +13,11 @@
         </a>
       </nav>
       <div>
-        <button
+        <button (click)="goToRegister()"
           class="hidden md:inline-flex px-4 py-2 mx-2 text-gray-700 hover:text-gray-400 transition-colors font-bold">
           Crear Cuenta
         </button>
-        <button
+        <button (click)="goToLogin()"
           class="hidden md:inline-flex px-4 py-2 rounded-2xl custom-primary-text hover:bg-gray-700 hover:text-white transition-colors border-2 border-gray-500">
           INICIAR SESIÓN
         </button>
@@ -41,8 +41,7 @@
             INFORMACIÓN</button>
         </div>
         <div class="flex justify-center">
-          <div class="relative w-full rounded-lg" (mouseenter)="onSlideHover(true)"
-            (mouseleave)="onSlideHover(false)">
+          <div class="relative w-full rounded-lg" (mouseenter)="onSlideHover(true)" (mouseleave)="onSlideHover(false)">
 
             <!-- Slides Container -->
             <div class="relative h-[400px] w-full">

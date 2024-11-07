@@ -10,4 +10,8 @@ export const routes: Routes = [
     },
     { path: 'home', component: HomeComponent, canActivate: [authGuard] },
     { path: '', component: LandingComponent },
+    {
+        path:'register',
+        loadComponent:() =>import ('./pages/auth/register/register.component'),canActivate:[authInverseGuard]
+    },
 ];

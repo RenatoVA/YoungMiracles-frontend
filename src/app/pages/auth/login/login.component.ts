@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { AuthRequest } from '../../../shared/models/auth-request.model';
-
+import { StorageService } from '../../../core/services/storage.service';
+import { inject, Injectable } from '@angular/core';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,6 +17,7 @@ export default class LoginComponent{
   loginForm: FormGroup;
   error: string = '';
   isLoading: boolean = false;
+  private storageService = inject(StorageService);
 
   constructor(
     private fb: FormBuilder,
@@ -33,11 +35,11 @@ export default class LoginComponent{
       this.isLoading = true;
       this.error = '';
       const credentials: AuthRequest = this.loginForm.value;
-      console.log('Login credentials:', credentials)
+
       this.authService.login(credentials).subscribe({
         next: (response) => {
           if (response.token) {
-            localStorage.setItem('jwtToken', response.token);
+            this.storageService.setAuthData(response);
             this.router.navigate(['/home']);
           } else {
             this.error = 'Login failed. Please check your credentials.';

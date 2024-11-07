@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 import {CommonModule} from '@angular/common';
-import { trigger, transition, style, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-landing',
   imports: [FooterComponent,CommonModule],
@@ -41,6 +41,8 @@ export class LandingComponent implements OnInit, OnDestroy {
   currentSlide = 0;
   private autoSlideInterval: any;
 
+  constructor(private router: Router) {}
+
   ngOnInit() {
     this.startAutoSlide();
   }
@@ -79,5 +81,12 @@ export class LandingComponent implements OnInit, OnDestroy {
     } else {
       this.startAutoSlide();
     }
+  }
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

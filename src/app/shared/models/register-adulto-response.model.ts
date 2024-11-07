@@ -9,4 +9,6 @@ export interface RegisterAdultResponse{
     condicionSalud:string;
     nivelActividad:string;
     necesitaAsistenciaFamiliar:boolean;
+    token:string;
+    role:string;
     }
