@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/service/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { AuthRequest } from '../../../shared/models/auth-request.model';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +23,8 @@ export default class LoginComponent{
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      correo: ['', [Validators.required, Validators.email]],
+      contrasena: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -31,12 +32,13 @@ export default class LoginComponent{
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.error = '';
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
+      const credentials: AuthRequest = this.loginForm.value;
+      console.log('Login credentials:', credentials)
+      this.authService.login(credentials).subscribe({
         next: (response) => {
           if (response.token) {
             localStorage.setItem('jwtToken', response.token);
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/home']);
           } else {
             this.error = 'Login failed. Please check your credentials.';
           }
