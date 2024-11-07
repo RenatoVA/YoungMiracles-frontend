@@ -47,6 +47,7 @@ export default class LoginComponent{
         },
         error: (err) => {
           this.error = 'An error occurred. Please try again.';
+          this.isLoading = false;
           console.error('Login error:', err);
         },
         complete: () => {

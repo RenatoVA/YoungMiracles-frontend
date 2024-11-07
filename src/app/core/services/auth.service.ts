@@ -1,6 +1,6 @@
 import { inject,Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { environment } from '../../../enviroments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthRequest } from '../../shared/models/auth-request.model';
@@ -19,6 +19,7 @@ export class AuthService {
   private baseURL = `${environment.apiUrl}/auth`;
   private http = inject(HttpClient);
   private storageService = inject(StorageService);
+  private router = inject(Router);
 
   constructor() { }
 
@@ -39,6 +40,7 @@ export class AuthService {
 
   logout(): void {
     this.storageService.clearAuthData();
+    this.router.navigate(['/']);
   }
   isAuthenticated(): boolean {
     return this.storageService.getAuthData() !== null;

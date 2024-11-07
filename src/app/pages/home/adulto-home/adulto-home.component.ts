@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-adulto-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,NavbarComponent],
   templateUrl: './adulto-home.component.html',
   styleUrl: './adulto-home.component.css'
 })
@@ -21,6 +24,15 @@ export class AdultoHomeComponent {
     { titulo: 'Ensalada de Quinoa', descripcion: 'Una ensalada rica en proteínas y fibra para mantenerte activo.' },
     { titulo: 'Batido de Frutas', descripcion: 'Un batido lleno de vitaminas y minerales para empezar tu día.' }
   ];
+
+  constructor(private authService: AuthService) {}
+  
+  // Función para cerrar sesión
+  logoutfunc = () => {
+    // Asegúrate de que se está llamando al método logout del AuthService
+    console.log('Cerrando sesión...');
+    this.authService.logout();
+  };
 
 
   //reservedSessions: any[] = []; 

@@ -12,7 +12,7 @@ export const routes: Routes = [
         loadComponent:() =>import ('./pages/auth/login/login.component'),canActivate:[authInverseGuard]
     },
     { path: 'home', component: HomeComponent, canActivate: [authGuard] },
-    { path: 'voluntario-home', component: VoluntarioHomeComponent, canActivate: [authGuard] },
+    { path: 'voluntario-home', component: VoluntarioHomeComponent },
     { path: '', component: LandingComponent },
     {
         path:'register',

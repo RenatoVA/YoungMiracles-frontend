@@ -1,15 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-voluntario-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,NavbarComponent],
   templateUrl: './voluntario-home.component.html',
   styleUrl: './voluntario-home.component.css'
 })
 export class VoluntarioHomeComponent {
   currentYear = new Date().getFullYear();
+
+  constructor(private authService: AuthService) {}
 
   menuItems = [
     { label: 'PERFIL', link: '#' },
@@ -36,5 +40,8 @@ export class VoluntarioHomeComponent {
   // la funcion para rechazar una solicitud
   rejectRequest(request: any) {
     console.log(`Solicitud rechazada para ${request.cliente}`);
+  }
+  logoutfunc = () => {
+    this.authService.logout();
   }
 }
