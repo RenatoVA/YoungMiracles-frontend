@@ -30,11 +30,11 @@ export class AuthService {
     );
   }
   registerAdulto(registerAdultRequest: RegisterAdultRequest): Observable<RegisterAdultResponse> {
-    return this.http.post<RegisterAdultResponse>(`${this.baseURL}/register/customer`,
+    return this.http.post<RegisterAdultResponse>(`${this.baseURL}/register/usuario`,
       registerAdultRequest);
   }
   registerVoluntario(registerVoluntarioRequest: RegisterVoluntarioRequest): Observable<RegisterVoluntarioResponse> {
-    return this.http.post<RegisterVoluntarioResponse>(`${this.baseURL}/register/customer`,
+    return this.http.post<RegisterVoluntarioResponse>(`${this.baseURL}/register/usuario`,
       registerVoluntarioRequest);
   }
 

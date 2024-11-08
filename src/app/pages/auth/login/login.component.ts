@@ -40,6 +40,7 @@ export default class LoginComponent{
         next: (response) => {
           if (response.token) {
             this.storageService.setAuthData(response);
+            this.storageService.setusertype(response.tipousuario);
             this.router.navigate(['/home']);
           } else {
             this.error = 'Login failed. Please check your credentials.';

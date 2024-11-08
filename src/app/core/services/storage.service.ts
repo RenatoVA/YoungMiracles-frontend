@@ -21,4 +21,7 @@ export class StorageService {
   clearAuthData(): void {
     localStorage.removeItem(this.authKey);
   }
+  setusertype(type:string):void{
+    localStorage.setItem('usertype',type);
+  }
 }

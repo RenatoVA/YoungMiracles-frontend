@@ -38,7 +38,7 @@ export default class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       correo: ['', [Validators.required, Validators.email]],
       especialidad: [''],
-      horasdisponibles: [null],
+      horasDisponibles: [null],
       experiencia: [null],
       nivelActividad: [''],
       necesitaAsistenciaFamiliar: [false]
@@ -49,7 +49,7 @@ export default class RegisterComponent {
     this.selectedUserType = type;
     if (type === 'voluntario') {
       this.registerForm.get('especialidad')?.setValidators(Validators.required);
-      this.registerForm.get('horasdisponibles')?.setValidators([Validators.required, Validators.min(1)]);
+      this.registerForm.get('horasDisponibles')?.setValidators([Validators.required, Validators.min(1)]);
       this.registerForm.get('experiencia')?.setValidators([Validators.required, Validators.min(0)]);
     } else if (type === 'adultomayor') {
       this.registerForm.get('nivelActividad')?.setValidators(Validators.required);
@@ -66,13 +66,14 @@ export default class RegisterComponent {
       if (this.selectedUserType === 'adultomayor') {
         
         const userData: RegisterAdultRequest = { ...this.registerForm.value, tipousuario: this.selectedUserType };
-        console.log('Login credentials:', userData)
         this.authService.registerAdulto(userData).subscribe({
           next: (response) => {
-            if (response) {
+            console.log("hola",response);
+            if (response.token) {
               this.storageService.setAuthData(response);
-              this.router.navigate(['/login']);
-            } else {
+              this.storageService.setusertype(response.tipousuario);
+              this.router.navigate(['/home']);
+            } else {  
               this.error = 'Registration failed. Please try again.';
             }
           },
@@ -89,8 +90,10 @@ export default class RegisterComponent {
         console.log('Login credentials:', userData)
         this.authService.registerVoluntario(userData).subscribe({
           next: (response) => {
-            if (response) {
-              this.router.navigate(['/login']);
+            if (response.token) {
+              this.storageService.setAuthData(response);
+              this.storageService.setusertype(response.tipousuario);
+              this.router.navigate(['/home']);
             } else {
               this.error = 'Registration failed. Please try again.';
             }

@@ -19,7 +19,7 @@ import {CommonModule} from '@angular/common';
 
 })
 export class HomeComponent {
-  typeuser: string | null = localStorage.getItem('typeuser');
+  typeuser: string | null = localStorage.getItem('usertype');
 
   constructor() {}
 }
