@@ -60,7 +60,7 @@ export class ScheduleSessionComponent implements OnInit {
     this.isLoading = true; // Activar indicador de carga
     this.horarioService.gethorariosByEspecialidad(especialidad.toLowerCase()).subscribe({
       next: (response) => {
-        this.horarios = response; // Guardar los horarios
+        this.horarios = response.filter(horario => horario.disponibilidad === 'disponible');
         this.isLoading = false; // Desactivar indicador de carga
       },
       error: (error) => {

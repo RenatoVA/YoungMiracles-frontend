@@ -6,4 +6,5 @@ export interface HorarioResponse {
     voluntario_id: number;
     voluntario_nombre:string;
     voluntario_especialidad:string;
+    disponibilidad:string;
 }
