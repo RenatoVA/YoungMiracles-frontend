@@ -1,61 +1,80 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router,RouterLink } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { StorageService } from '../../../core/services/storage.service';
+import { SesionService } from '../../../core/services/sesion.service';
+import { SesionRequest } from '../../../shared/models/sesion-request.model';
+import { SesionResponse } from '../../../shared/models/sesion-response.model';
 
 @Component({
   selector: 'app-adulto-home',
   standalone: true,
-  imports: [CommonModule,NavbarComponent],
+  imports: [CommonModule,NavbarComponent,RouterLink],
   templateUrl: './adulto-home.component.html',
   styleUrl: './adulto-home.component.css'
 })
-export class AdultoHomeComponent {
+export class AdultoHomeComponent implements OnInit {
   currentYear = new Date().getFullYear();
-  
-  reservedSessions = [
-    { cliente: 'Carlos García', fecha: '05/11/2024', hora: '10:00 AM', especialista: 'Dr. Fernández' },
-    { cliente: 'Ana Pérez', fecha: '06/11/2024', hora: '2:00 PM', especialista: 'Lic. Gómez' }
-  ];
-
-  // datos simulados
+  private storageService = inject(StorageService);
+  private userinfo = this.storageService.getAuthData();
+  error: string = '';
+  isLoading: boolean = false;
+  reservedSessions: SesionResponse[] = [];
   healthyRecipes = [
-    { titulo: 'Ensalada de Quinoa', descripcion: 'Una ensalada rica en proteínas y fibra para mantenerte activo.' },
-    { titulo: 'Batido de Frutas', descripcion: 'Un batido lleno de vitaminas y minerales para empezar tu día.' }
+    { titulo: 'Ensalada de Quinoa',imagen:"https://mojo.generalmills.com/api/public/content/RCngmFENdkS5zrHuS7yeVw_gmi_hi_res_jpeg.jpeg?v=93b2631f&t=16e3ce250f244648bef28c5949fb99ff", descripcion: 'Una ensalada rica en proteínas y fibra para mantenerte activo.' },
+    { titulo: 'Batido de Frutas',imagen:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCFqSaCXowpDCLf5w506mAfy-u_mijjIcKhQ&s", descripcion: 'Un batido lleno de vitaminas y minerales para empezar tu día.' }
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private sesionService: SesionService,
+    private router: Router) {}
   
-  // Función para cerrar sesión
   logoutfunc = () => {
-    // Asegúrate de que se está llamando al método logout del AuthService
-    console.log('Cerrando sesión...');
     this.authService.logout();
   };
 
+  ngOnInit() {
+    this.isLoading = true;
+    
+    if (this.userinfo) {
+      this.sesionService.getSesionesById(this.userinfo.id,"adultomayor").subscribe({
+        next: (response) => {
+          if (response) {
+            console.log('userinfo:', response);
+            response.forEach(sesion => {
+              if (sesion.estado === 'pendiente') {
+                this.reservedSessions.push(sesion);
+              }
+            });
+          } else {  
+            this.error = 'No se pudo obtener las sesiones.';
+          }
+        },
+        error: (err) => {
+          console.error('Sesion error:', err);
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
+    
 
-  //reservedSessions: any[] = []; 
-  //healthyRecipes: any[] = [];   
-
-  //constructor(private http: HttpClient) {} // httpClient
-
-  //ngOnInit(): void {
-    // Obtener sesiones reservadas 
-    //this.http.get<any[]>('URL/endpoint-sesiones')
-      //.subscribe(data => {
-        //this.reservedSessions = data; // colocar datos obtenidos
-      //}, error => {
-        //console.error('Error al obtener sesiones reservadas:', error);
-      //});
-
-    // jalar las recomendaciones saludables 
-    //this.http.get<any[]>('URL_DEL_BACKEND/endpoint-recetas')
-      //.subscribe(data => {
-        //this.healthyRecipes = data; // Asignar datos obtenidos 
-      //}, error => {
-       // console.error('Error al obtener recetas saludables:', error);
-      //});
-    //}
   }
-  
+  updateSessionState(sessionId: number, newState: string): void {
+    const payload = { id: sessionId, state: newState };
+    this.sesionService.updatestateSession(payload).subscribe({
+      next: () => {
+        this.reservedSessions = this.reservedSessions.filter((session) => session.id !== sessionId);
+      },
+      error: (err) => {
+        console.error(`Error al actualizar la sesión ${sessionId}:`, err);
+      },
+    });
+  }
+}

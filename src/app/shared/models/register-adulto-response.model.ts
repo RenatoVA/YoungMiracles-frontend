@@ -11,4 +11,5 @@ export interface RegisterAdultResponse{
     necesitaAsistenciaFamiliar:boolean;
     token:string;
     role:string;
+    id:number;
     }

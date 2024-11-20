@@ -80,6 +80,7 @@ export default class RegisterComponent {
           error: (err) => {
             this.error = 'An error occurred. Please try again.';
             console.error('Registration error:', err);
+            this.isLoading = false;
           },
           complete: () => {
             this.isLoading = false;
@@ -101,6 +102,7 @@ export default class RegisterComponent {
           error: (err) => {
             this.error = 'An error occurred. Please try again.';
             console.error('Registration error:', err);
+            this.isLoading = false;
           },
           complete: () => {
             this.isLoading = false;

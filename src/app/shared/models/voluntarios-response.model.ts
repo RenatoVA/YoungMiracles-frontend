@@ -1,4 +1,4 @@
-export interface RegisterVoluntarioResponse{
+export interface VoluntariosResponse{
     tipousuario: string;
     nombre: string;
     apellido_paterno: string;
@@ -9,8 +9,6 @@ export interface RegisterVoluntarioResponse{
     especialidad: string;
     horasDisponibles: number;
     experiencia: number;
-    token: string;
-    role:string;
     id: number;
     }
     

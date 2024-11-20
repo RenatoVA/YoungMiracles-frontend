@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { SesionService } from '../../../core/services/sesion.service';
+import { SesionResponse } from '../../../shared/models/sesion-response.model';
+import { SesionRequest } from '../../../shared/models/sesion-request.model';
+import { StorageService } from '../../../core/services/storage.service';
 
 @Component({
   selector: 'app-voluntario-home',
@@ -10,38 +15,49 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './voluntario-home.component.html',
   styleUrl: './voluntario-home.component.css'
 })
-export class VoluntarioHomeComponent {
+export class VoluntarioHomeComponent implements OnInit{
   currentYear = new Date().getFullYear();
+  private storageService = inject(StorageService);
+  private userinfo = this.storageService.getAuthData();
+  error: string = '';
+  isLoading: boolean = false;
+  reservedSessions: SesionResponse[] = [];
+  pastSessions: SesionResponse[] = [];
 
-  constructor(private authService: AuthService) {}
-
-  menuItems = [
-    { label: 'PERFIL', link: '#' },
-    { label: 'MIS SESIONES', link: '#' },
-    { label: 'SOLICITUDES', link: '#' }
-  ];
-  //Simule sesiones y reservas para ver como se veía
-  reservedSessions = [
-    { cliente: 'Carlos García', fecha: '05/11/2024', hora: '10:00 AM' },
-    { cliente: 'Ana Pérez', fecha: '06/11/2024', hora: '2:00 PM' }
-  ];
-
-  reservationRequests = [
-    { cliente: 'Jorge Ramos', fecha: '07/11/2024', hora: '9:00 AM' },
-    { cliente: 'Lucía Fernández', fecha: '08/11/2024', hora: '4:00 PM' }
-  ];
-
-  // la funcion para aceptar una solicitud
-  acceptRequest(request: any) {
-    console.log(`Solicitud aceptada para ${request.cliente}`);
-    // Lógica para aceptar la solicitud
-  }
-
-  // la funcion para rechazar una solicitud
-  rejectRequest(request: any) {
-    console.log(`Solicitud rechazada para ${request.cliente}`);
-  }
+  constructor(private authService: AuthService,private sesionService:SesionService) {}
   logoutfunc = () => {
     this.authService.logout();
+  }
+
+  ngOnInit() {
+    this.isLoading = true;
+    
+    if (this.userinfo) {
+      this.sesionService.getSesionesById(this.userinfo.id,"voluntario").subscribe({
+        next: (response) => {
+          if (response) {
+            console.log('userinfo:', response);
+            response.forEach(sesion => {
+              if (sesion.estado === 'pendiente') {
+                this.reservedSessions.push(sesion);
+              } else {
+                this.pastSessions.push(sesion);
+              }
+            });
+          } else {  
+            this.error = 'No se pudo obtener las sesiones.';
+          }
+        },
+        error: (err) => {
+          console.error('Sesion error:', err);
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
+    
+
   }
 }

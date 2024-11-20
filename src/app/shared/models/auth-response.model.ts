@@ -5,5 +5,6 @@ export interface AuthResponse{
     apellido_materno: string;
     role:string;
     tipousuario:string;
+    id:number;
   }
   

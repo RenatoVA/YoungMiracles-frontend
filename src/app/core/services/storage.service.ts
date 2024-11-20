@@ -24,4 +24,14 @@ export class StorageService {
   setusertype(type:string):void{
     localStorage.setItem('usertype',type);
   }
+  setpayordertoken(token:string):void{
+    localStorage.setItem('paypalToken',token);
+  }
+  getpayordertoken():string|null{
+    return localStorage.getItem('paypalToken');
+  }
+  removepayordertoken():void{
+    localStorage.removeItem('paypalToken');
+  }
+  
 }

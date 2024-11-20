@@ -1,54 +1,97 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl relative overflow-hidden">
-      <!-- Elementos decorativos -->
-      <div class="absolute top-0 left-0 w-20 h-20 bg-blue-200 rounded-full opacity-50 transform -translate-x-1/2 -translate-y-1/2"></div>
-      <div class="absolute bottom-0 right-0 w-32 h-32 bg-green-200 rounded-full opacity-50 transform translate-x-1/3 translate-y-1/3"></div>
-      <div class="absolute top-1/2 left-1/2 w-16 h-16 bg-yellow-200 rounded-full opacity-50 transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <p class="text-center text-3xl text-gray-600 pb-9">
+    ¿Qué tipo de sesión desea agendar?
+  </p>
+  <!-- Botones de especialidad -->
+  <div *ngIf="!selectedtypesesion" class="flex justify-center space-x-4 mb-8">
+    
+    <button
+      class="px-6 py-3 text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:outline-none"
+      (click)="selectType('fisioterapia')"
+    >
+      Fisioterapia
+    </button>
+    <button
+      class="px-6 py-3 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
+      (click)="selectType('taller')"
+    >
+      Taller
+    </button>
+    <button
+      class="px-6 py-3 text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:outline-none"
+      (click)="selectType('nutricion')"
+    >
+      Nutrición
+    </button>
+  </div>
+
+  <!-- Mensaje de cargando -->
+  <div *ngIf="isLoading" class="text-center text-lg text-gray-600">
+    Cargando horarios disponibles...
+  </div>
+
+  <!-- Horarios disponibles -->
+  <div *ngIf="!selectedHorario && !isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div
+      *ngFor="let horario of horarios"
+      class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border-t-4 border-teal-500 hover:border-teal-600"
+    >
+      <!-- Nombre del voluntario -->
+      <h4 class="text-xl font-extrabold text-gray-900 mb-1">{{ horario.voluntario_nombre }}</h4>
   
-      <div class="text-center relative z-10">
-        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-          Programar Nueva Sesión
-        </h2>
-        <p class="mt-2 text-sm text-gray-600">
-          Complete los detalles para programar una nueva sesión
-        </p>
+      <!-- Especialidad -->
+      <p class="text-sm font-medium text-gray-700 mb-4">
+        Especialidad: {{ horario.voluntario_especialidad | titlecase }}
+      </p>
+  
+      <!-- Horario -->
+      <div class="mb-2">
+        <p class="text-sm font-bold text-gray-800">Horario:</p>
+        <p class="text-sm text-gray-600">{{ horario.hora_inicio }} - {{ horario.hora_fin }}</p>
       </div>
   
-      <form class="mt-8 space-y-6" [formGroup]="horarioForm" (ngSubmit)="onSubmit()">
-        <div class="rounded-md shadow-sm -space-y-px">
-          <div>
-            <label for="fecha" class="sr-only">Fecha</label>
-            <input id="fecha" name="fecha" type="date" formControlName="fecha" required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                   placeholder="Fecha">
-          </div>
-          <div>
-            <label for="horaInicio" class="sr-only">Hora de Inicio</label>
-            <input id="horaInicio" name="horaInicio" type="time" formControlName="horaInicio" required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                   placeholder="Hora de Inicio">
-          </div>
-          <div>
-            <label for="horaFin" class="sr-only">Hora de Fin</label>
-            <input id="horaFin" name="horaFin" type="time" formControlName="horaFin" required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                   placeholder="Hora de Fin">
-          </div>
-          <div>
-            <label for="descripcion" class="sr-only">Descripción</label>
-            <textarea id="descripcion" name="descripcion" formControlName="descripcion" required
-                      class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                      placeholder="Descripción de la sesión"></textarea>
-          </div>
-        </div>
+      <!-- Fecha -->
+      <div>
+        <p class="text-sm font-bold text-gray-800">Fecha:</p>
+        <p class="text-sm text-gray-600">{{ horario.fecha }}</p>
+      </div>
   
-        <div>
-          <button type="submit" [disabled]="!horarioForm.valid"
-                  class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
-            Programar Sesión
-          </button>
-        </div>
-      </form>
+      <!-- Botón de selección -->
+      <button
+        class="mt-6 w-full py-2 px-4 text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:outline-none"
+        (click)="selectHorario(horario)"
+      >
+        Seleccionar
+      </button>
     </div>
   </div>
-  
+  <div *ngIf="selectedHorario" class="max-w-md mx-auto bg-white p-10 rounded-xl shadow-2xl">
+    <h3 class="text-xl font-bold text-gray-900 mb-4">Detalles de la Sesión</h3>
+    <div class="space-y-4">
+      <p><strong>Tipo de Sesión:</strong> {{ selectedtypesesion | titlecase }}</p>
+      <p><strong>Voluntario:</strong> {{ selectedHorario.voluntario_nombre }}</p>
+      <p><strong>Fecha:</strong> {{ selectedHorario.fecha }}</p>
+      <p><strong>Horario:</strong> {{ selectedHorario.hora_inicio }} - {{ selectedHorario.hora_fin }}</p>
+      <p><strong>Costo:</strong> ${{ tarifa }}</p>
+    </div>
+    <div class="mt-6 flex justify-between">
+      <button
+        class="py-2 px-4 text-white bg-gray-500 rounded-lg hover:bg-gray-600 focus:outline-none"
+        (click)="goBack()"
+      >
+        Elegir Otro Horario
+      </button>
+      <button
+        class="py-2 px-4 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
+        (click)="proceedToPayment()"
+      >
+        Continuar con el Pago
+      </button>
+    </div>
+  </div>
+
+  <!-- Mensaje si no hay horarios -->
+  <div *ngIf="selectedtypesesion && !isLoading && horarios.length === 0" class="text-center text-lg text-gray-600">
+    No hay horarios disponibles para {{ selectedtypesesion | titlecase }}.
+  </div>
+</div>

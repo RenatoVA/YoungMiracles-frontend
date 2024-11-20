@@ -1,4 +1,3 @@
-<app-navbar [logoutfunc]="logoutfunc"></app-navbar>
   <main class="flex-1 p-6 bg-gray-50 mt-8">
     <div class="layout-container flex flex-col md:flex-row gap-6">
         <!-- Sección de Sesiones Reservadas -->
@@ -6,13 +5,27 @@
             <h3 class="text-xl font-semibold custom-secondary-text mb-4">Sesiones Reservadas</h3>
             <div class="session-list space-y-4">
                 <div class="session bg-gray-100 p-4 rounded-lg shadow-sm" *ngFor="let session of reservedSessions">
-                    <p><span class="font-semibold">Cliente:</span> {{ session.cliente }}</p>
                     <p><span class="font-semibold">Fecha:</span> {{ session.fecha }}</p>
-                    <p><span class="font-semibold">Hora:</span> {{ session.hora }}</p>
-                    <p><span class="font-semibold">Especialista:</span> {{ session.especialista }}</p>
+                    <p><span class="font-semibold">Hora:</span> {{ session.horario.hora_inicio +" "+session.horario.hora_fin}}</p>
+                    <p><span class="font-semibold">Especialista:</span> {{ session.voluntarioNombre }}</p>
+                    <div class="flex gap-4 mt-2">
+                      <button
+                      class="btn accept-btn bg-teal-600 text-white px-3 py-1 rounded-md hover:bg-teal-700"
+                      (click)="updateSessionState(session.id, 'completado')"
+                    >
+                      Confirmar
+                    </button>
+                    <button
+                      class="btn reject-btn bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                      (click)="updateSessionState(session.id, 'cancelado')"
+                    >
+                      Cancelar
+                    </button>
+                      </div>
                 </div>
+                
             </div>
-            <button class="btn btn-primary mt-4 bg-teal-400 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300" routerLink="/schedule-session">
+            <button class="btn btn-primary mt-4 bg-teal-400 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300" routerLink="/home/schedule">
                 Añadir nueva sesión
             </button>
         </div>
@@ -21,12 +34,16 @@
         <div class="section recetas-section bg-white p-6 rounded-lg shadow-md w-full md:w-1/3">
             <h3 class="text-xl font-semibold custom-secondary-text mb-4">Recomendaciones Saludables</h3>
             <div class="recommendations-list space-y-4">
-                <div class="recommendation bg-gray-100 p-4 rounded-lg shadow-sm" *ngFor="let recipe of healthyRecipes">
-                    <h4 class="text-lg font-semibold">{{ recipe.titulo }}</h4>
-                    <p>{{ recipe.descripcion }}</p>
-                </div>
+              <div class="recommendation bg-gray-100 p-4 rounded-lg shadow-sm" *ngFor="let recipe of healthyRecipes">
+                <h4 class="text-lg font-semibold">{{ recipe.titulo }}</h4>
+                
+                <!-- Imagen con tamaño controlado -->
+                <img *ngIf="recipe.imagen" [src]="recipe.imagen" alt="{{ recipe.titulo }}" class="max-w-xs h-auto mx-auto rounded-md mb-3" />
+                
+                <p>{{ recipe.descripcion }}</p>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
   
     <!-- Sección de Videos -->
@@ -40,7 +57,4 @@
     </div>
   </main>
   
-  <footer class="mt-8 border-t border-gray-200 pt-4 text-center bg-white">
-    <p class="text-sm text-gray-600">© {{ currentYear }} Young Miracles. Todos los derechos reservados.</p>
-  </footer>
   

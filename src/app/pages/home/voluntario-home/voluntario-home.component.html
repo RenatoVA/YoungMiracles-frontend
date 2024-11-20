@@ -1,35 +1,32 @@
-<div class="flex min-h-screen w-full flex-col bg-gray-50 pt-16">
-  <app-navbar [logoutfunc]="logoutfunc"></app-navbar>
+
   <main class="flex-1 p-6">
     <div class="section mb-8">
       <h3 class="text-lg font-semibold text-teal-600 mb-4">Sesiones Reservadas</h3>
       <div class="session-list flex flex-col gap-4">
         <div class="session bg-white p-4 border border-gray-300 rounded-lg shadow-sm" *ngFor="let session of reservedSessions">
-          <p class="text-gray-700"><span class="font-semibold">Cliente:</span> {{ session.cliente }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Cliente:</span> {{ session.adultomayorNombre }}</p>
           <p class="text-gray-700"><span class="font-semibold">Fecha:</span> {{ session.fecha }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Hora:</span> {{ session.hora }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Estado:</span> {{ session.estado }}</p>
+          <div class="flex gap-4 mt-2">
+            <button class="btn accept-btn bg-teal-600 text-white px-3 py-1 rounded-md hover:bg-teal-700" >Confirmar</button>
+            <button class="btn reject-btn bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600" >Cancelar</button>
+          </div>
         </div>
       </div>
     </div>
   
     <!-- sección de reserva -->
     <div class="section mb-8">
-      <h3 class="text-lg font-semibold text-teal-600 mb-4">Solicitudes de Reserva</h3>
+      <h3 class="text-lg font-semibold text-teal-600 mb-4">Sesiones Pasadas</h3>
       <div class="request-list flex flex-col gap-4">
-        <div class="request bg-white p-4 border border-gray-300 rounded-lg shadow-sm" *ngFor="let request of reservationRequests">
-          <p class="text-gray-700"><span class="font-semibold">Cliente:</span> {{ request.cliente }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Fecha:</span> {{ request.fecha }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Hora:</span> {{ request.hora }}</p>
-          <div class="flex gap-4 mt-2">
-            <button class="btn accept-btn bg-teal-600 text-white px-3 py-1 rounded-md hover:bg-teal-700" (click)="acceptRequest(request)">Aceptar</button>
-            <button class="btn reject-btn bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600" (click)="rejectRequest(request)">Rechazar</button>
-          </div>
+        <div class="request bg-white p-4 border border-gray-300 rounded-lg shadow-sm" *ngFor="let session of pastSessions">
+          <p class="text-gray-700"><span class="font-semibold">Cliente:</span> {{ session.adultomayorNombre }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Fecha:</span> {{ session.fecha }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Estado:</span> {{ session.estado }}</p>
+
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="mt-8 border-t border-gray-200 pt-4 text-center">
-    <p class="text-sm text-gray-600">© {{ currentYear }} Young Miracles. Todos los derechos reservados.</p>
-  </footer>
-</div>
+
