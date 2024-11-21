@@ -1,0 +1,91 @@
+<main class="min-h-screen bg-gray-50 py-12 px-6 sm:px-12 lg:px-16">
+    <div class="container mx-auto max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+      <!-- Título -->
+      <h2 class="text-2xl font-bold text-teal-600 mb-6 text-center">Perfil de Usuario</h2>
+  
+      <!-- Información del Usuario -->
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-6">
+        <!-- Nombre -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Nombre</label>
+          <input
+            type="text"
+            formControlName="nombre"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+  
+        <!-- Apellido Paterno -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Apellido Paterno</label>
+          <input
+            type="text"
+            formControlName="apellido_paterno"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+  
+        <!-- Apellido Materno -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Apellido Materno</label>
+          <input
+            type="text"
+            formControlName="apellido_materno"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+  
+        <!-- Correo -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Correo</label>
+          <input
+            type="email"
+            formControlName="correo"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+  
+        <!-- Género -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Género</label>
+          <select
+            formControlName="genero"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          >
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+  
+        <!-- Edad -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Edad</label>
+          <input
+            type="number"
+            formControlName="edad"
+            min="1"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+  
+        <!-- Botón de Guardar -->
+        <div class="text-center">
+          <button
+            type="submit"
+            class="px-6 py-3 text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            [disabled]="!profileForm.valid || isUpdating"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+  
+        <!-- Indicador de Carga -->
+        <div *ngIf="isUpdating" class="text-center mt-4">
+          <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-12 w-12 mx-auto"></div>
+          <p class="text-gray-500 mt-2">Actualizando perfil...</p>
+        </div>
+      </form>
+    </div>
+  </main>
+  

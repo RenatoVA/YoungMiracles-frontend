@@ -12,5 +12,6 @@ export interface SesionResponse {
     duracion: number;
     adultomayorNombre: string;
     voluntarioNombre: string;
+    tipoSesion: string;
 
 }

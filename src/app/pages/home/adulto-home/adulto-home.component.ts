@@ -44,7 +44,7 @@ export class AdultoHomeComponent implements OnInit {
       this.sesionService.getSesionesById(this.userinfo.id,"adultomayor").subscribe({
         next: (response) => {
           if (response) {
-            console.log('userinfo:', response);
+            console.log('userinfo:', this.userinfo);
             response.forEach(sesion => {
               if (sesion.estado === 'pendiente') {
                 this.reservedSessions.push(sesion);

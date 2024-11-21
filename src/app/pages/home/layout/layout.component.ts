@@ -3,6 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { FooterComponent } from '../../../shared/components/footer/footer.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { StorageService } from '../../../core/services/storage.service';
+import { inject, Injectable } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -12,8 +14,11 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
-constructor(private authService: AuthService) {}
+  private storageService = inject(StorageService);
+  usertype = this.storageService.getAuthData()?.tipousuario;
+  constructor(private authService: AuthService ) {}
   logoutfunc = () => {
     this.authService.logout();
   }
+
 }

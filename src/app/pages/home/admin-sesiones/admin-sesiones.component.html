@@ -1,0 +1,152 @@
+<main class="p-6 bg-gray-50 min-h-screen">
+  <div class="container mx-auto max-w-5xl">
+    <h2 class="text-2xl font-semibold text-teal-600 mb-4">Mis Sesiones</h2>
+
+    <!-- Tabla de Sesiones -->
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto">
+        <thead class="bg-teal-100 text-gray-700">
+          <tr>
+            <th class="py-3 px-6 text-left uppercase text-sm font-semibold">ID</th>
+            <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Tipo</th>
+            <th class="py-3 px-6 text-left uppercase text-sm font-semibold">
+              {{ typeUser === 'voluntario' ? 'Paciente' : 'Voluntario' }}
+            </th>
+            <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Fecha</th>
+            <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Hora</th>
+            <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let session of sessions"
+            class="bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+            (click)="openModal(session)"
+          >
+            <!-- ID -->
+            <td class="py-3 px-6 text-gray-700 font-medium">
+              {{ session.id }}
+            </td>
+
+            <!-- Tipo de Sesión -->
+            <td class="py-3 px-6 text-teal-600 font-semibold">
+              {{ session.tipoSesion }}
+            </td>
+
+            <!-- Nombre del Voluntario o Adulto Mayor -->
+            <td class="py-3 px-6 text-gray-700">
+              {{ typeUser === 'voluntario' ? session.adultomayorNombre : session.voluntarioNombre }}
+            </td>
+
+            <!-- Fecha -->
+            <td class="py-3 px-6 text-gray-600">
+              {{ session.fecha }}
+            </td>
+
+            <!-- Hora -->
+            <td class="py-3 px-6 text-gray-600">
+              {{ session.horario.hora_inicio }}
+            </td>
+
+            <!-- Estado con Colores -->
+            <td
+              class="py-3 px-6 font-bold"
+              [ngClass]="{
+                'text-orange-600': session.estado === 'pendiente',
+                'text-green-600': session.estado === 'completado',
+                'text-red-600': session.estado === 'cancelado'
+              }"
+            >
+              {{ session.estado | titlecase }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal -->
+    <div
+      *ngIf="selectedSession"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div class="bg-white w-3/4 max-w-lg p-6 rounded-lg shadow-lg">
+        <button
+          class="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+          (click)="closeModal()"
+        >
+          ×
+        </button>
+
+        <!-- Detalle de la Sesión -->
+        <h3 class="text-lg font-semibold text-teal-600 mb-4">Detalles de la Sesión</h3>
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold">ID:</span> {{ selectedSession.id }}
+        </p>
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold">Tipo:</span> {{ selectedSession.tipoSesion }}
+        </p>
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold">Nombre:</span>
+          {{ typeUser === 'voluntario' ? selectedSession.adultomayorNombre : selectedSession.voluntarioNombre }}
+        </p>
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold">Fecha:</span> {{ selectedSession.fecha }}
+        </p>
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold">Hora:</span> {{ selectedSession.horario.hora_inicio }}
+        </p>
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold">Estado:</span>
+          <span
+            [ngClass]="{
+              'text-orange-600': selectedSession.estado === 'pendiente',
+              'text-green-600': selectedSession.estado === 'completado',
+              'text-red-600': selectedSession.estado === 'cancelado'
+            }"
+          >
+            {{ selectedSession.estado | titlecase }}
+          </span>
+        </p>
+
+        <!-- Información Adicional Según el Tipo de Sesión -->
+        <ng-container *ngIf="selectedSession.tipoSesion === 'fisioterapia'">
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Tipo de Fisioterapia:</span> {{ selectedSession.tipoFisioterapia }}
+          </p>
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Observaciones:</span> {{ selectedSession.observaciones }}
+          </p>
+        </ng-container>
+        <ng-container *ngIf="selectedSession.tipoSesion === 'taller'">
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Descripción:</span> {{ selectedSession.descripcion }}
+          </p>
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Capacidad Máxima:</span> {{ selectedSession.capacidadMaxima }}
+          </p>
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Material Requerido:</span> {{ selectedSession.materialRequerido }}
+          </p>
+        </ng-container>
+        <ng-container *ngIf="selectedSession.tipoSesion === 'nutricion'">
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Indicaciones:</span> {{ selectedSession.indicaciones }}
+          </p>
+          <p class="text-sm text-gray-700">
+            <span class="font-semibold">Receta:</span> {{ selectedSession.receta }}
+          </p>
+        </ng-container>
+
+        <!-- Botón de Cerrar -->
+        <div class="mt-4 flex justify-end">
+          <button
+            class="px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600"
+            (click)="closeModal()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

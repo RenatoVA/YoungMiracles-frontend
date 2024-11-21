@@ -17,4 +17,7 @@ export class FacturaService  {
     createFactura(facturaRequest: FacturaRequest): Observable<FacturaResponse> {
         return this.http.post<FacturaResponse>(`${this.apiUrl}`, facturaRequest);
     }
+    getFacturasById(id: number): Observable<FacturaResponse[]> {
+        return this.http.get<FacturaResponse[]>(`${this.apiUrl}/usuario/${id}`);
+    }
 }

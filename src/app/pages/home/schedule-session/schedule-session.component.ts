@@ -12,9 +12,6 @@ import { FacturaService } from '../../../core/services/factura.services';
 import { FacturaRequest } from '../../../shared/models/factura-request.model';
 import { HorarioResponse } from '../../../shared/models/horario-response.model';
 import { HorarioService } from '../../../core/services/horario.service';
-import { SesionRequest } from '../../../shared/models/sesion-request.model';
-
-
 
 @Component({
   selector: 'app-horario-voluntario',
@@ -24,13 +21,13 @@ import { SesionRequest } from '../../../shared/models/sesion-request.model';
   styleUrls: ['./schedule-session.component.css'],
 })
 export class ScheduleSessionComponent implements OnInit {
-    horarioForm: FormGroup;
     selectedtypesesion: string | null = null;
     voluntarios: VoluntariosResponse[] = [];
     private storageService = inject(StorageService);
     private userinfo = this.storageService.getAuthData();
     horarios: HorarioResponse[] = []; 
     isLoading = false;
+    isProcessing= false;
     selectedHorario: HorarioResponse | null = null; 
     tarifa: number = 0;
     tarifas: { [key in 'fisioterapia' | 'taller' | 'nutricion']: number } = {
@@ -39,17 +36,7 @@ export class ScheduleSessionComponent implements OnInit {
       nutricion: 120.0,
     };
 
-  constructor(private fb: FormBuilder, private sesionService: SesionService,private voluntarioService: VoluntarioService,
-    private cdr: ChangeDetectorRef,private router: Router,private facturaService: FacturaService,private horarioService: HorarioService) {
-    this.horarioForm = this.fb.group({
-      fecha: ['', Validators.required],
-      hora: ['', Validators.required],
-      voluntarioId: ['', Validators.required],
-      tiposesion: [''],
-      tipoFisioterapia:[''],
-      observaciones:[''],
-      indicaciones:[''],
-    });
+  constructor( private sesionService: SesionService,private router: Router,private facturaService: FacturaService,private horarioService: HorarioService) {
   }
   ngOnInit(): void {}
   selectType(selectedType: string): void {
@@ -84,14 +71,17 @@ export class ScheduleSessionComponent implements OnInit {
       console.error('Faltan datos necesarios para crear la sesión');
       return;
     }
+  
+    this.isProcessing = true; // Mostrar círculo de carga
+  
     const formData: any = {
       estado: 'pendiente',
       horarioId: this.selectedHorario.id,
       adultoMayorId: this.userinfo.id,
       voluntarioId: this.selectedHorario.voluntario_id,
-      duracion: 1,
       tiposesion: this.selectedtypesesion.toLowerCase(),
     };
+  
     if (this.selectedtypesesion.toLowerCase() === 'fisioterapia') {
       formData.tipoFisioterapia = 'rehabilitacion';
       formData.observaciones = 'ninguna';
@@ -103,6 +93,7 @@ export class ScheduleSessionComponent implements OnInit {
       formData.capacidadMaxima = 10;
       formData.materialRequerido = 'ninguno';
     }
+  
     this.sesionService.createSession(formData).subscribe({
       next: (response) => {
         const facturaRequest: FacturaRequest = {
@@ -114,17 +105,19 @@ export class ScheduleSessionComponent implements OnInit {
         this.facturaService.createFactura(facturaRequest).subscribe({
           next: (response) => {
             this.router.navigate(['/pay', response.facturaId]);
+            this.isProcessing = false; // Ocultar círculo de carga
           },
           error: (error) => {
             console.error('Error al crear la factura:', error);
+            this.isProcessing = false; // Ocultar círculo de carga
           },
         });
       },
       error: (error) => {
         console.error('Error al crear la sesión:', error);
+        this.isProcessing = false; // Ocultar círculo de carga
       },
     });
-
   }
 
 

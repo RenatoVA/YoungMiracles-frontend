@@ -1,0 +1,130 @@
+<main class="p-6 bg-gray-50 min-h-screen">
+    <div class="container mx-auto max-w-4xl">
+      <h2 class="text-2xl font-semibold text-teal-600 mb-4">Gestión de Horarios</h2>
+  
+      <!-- Botón para Crear Nuevo Horario -->
+      <div class="flex justify-end mb-4">
+        <button
+          class="px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition"
+          (click)="openCreateHorarioModal()"
+        >
+          + Crear Nuevo Horario
+        </button>
+      </div>
+  
+      <!-- Tabla de Horarios -->
+      <div class="overflow-x-auto">
+        <table class="w-full table-auto">
+          <thead class="bg-teal-100 text-gray-700">
+            <tr>
+              <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Fecha</th>
+              <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Hora Inicio</th>
+              <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Hora Fin</th>
+              <th class="py-3 px-6 text-left uppercase text-sm font-semibold">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let horario of horarios"
+              class="bg-white hover:bg-gray-50 transition-colors"
+            >
+              <td class="py-3 px-6 text-gray-700">{{ horario.fecha }}</td>
+              <td class="py-3 px-6 text-gray-700">{{ horario.hora_inicio }}</td>
+              <td class="py-3 px-6 text-gray-700">{{ horario.hora_fin }}</td>
+              <td class="py-3 px-6">
+                <button
+                  class="text-red-500 hover:underline"
+                  (click)="deleteHorario(horario.id)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Modal para Crear Horario -->
+      <div
+        *ngIf="showCreateHorarioModal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      >
+        <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold text-teal-600 mb-4">Crear Nuevo Horario</h3>
+  
+          <!-- Formulario -->
+          <form [formGroup]="horarioForm" (ngSubmit)="onCreateHorario()">
+            <div class="mb-4">
+              <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+              <input
+                type="date"
+                id="fecha"
+                formControlName="fecha"
+                class="w-full border border-gray-300 rounded-md p-2 focus:ring-teal-500 focus:border-teal-500"
+                required
+              />
+            </div>
+  
+            <div class="mb-4">
+              <label for="hora_inicio" class="block text-sm font-medium text-gray-700 mb-1">Hora de Inicio</label>
+              <input
+                type="time"
+                id="hora_inicio"
+                formControlName="hora_inicio"
+                class="w-full border border-gray-300 rounded-md p-2 focus:ring-teal-500 focus:border-teal-500"
+                required
+              />
+            </div>
+  
+            <div class="mb-4">
+              <label for="hora_fin" class="block text-sm font-medium text-gray-700 mb-1">Hora de Fin</label>
+              <input
+                type="time"
+                id="hora_fin"
+                formControlName="hora_fin"
+                class="w-full border border-gray-300 rounded-md p-2 focus:ring-teal-500 focus:border-teal-500"
+                required
+              />
+            </div>
+  
+            <!-- Botones -->
+            <div class="flex justify-end gap-4">
+              <button
+                type="button"
+                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition"
+                (click)="closeCreateHorarioModal()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition"
+              >
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+      <!-- Modal de Error -->
+      <div
+        *ngIf="showErrorModal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      >
+        <div class="bg-white w-full max-w-sm p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold text-red-600 mb-4">Error</h3>
+          <p class="text-gray-700">No se puede eliminar este horario porque hay una sesión pendiente.</p>
+          <div class="mt-4 flex justify-end">
+            <button
+              class="px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600"
+              (click)="closeErrorModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  

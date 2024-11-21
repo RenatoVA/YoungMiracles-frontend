@@ -1,10 +1,10 @@
 <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <p class="text-center text-3xl text-gray-600 pb-9">
+  <p *ngIf="!isProcessing && !selectedtypesesion" class="text-center text-3xl text-gray-600 pb-9">
     ¿Qué tipo de sesión desea agendar?
   </p>
+
   <!-- Botones de especialidad -->
-  <div *ngIf="!selectedtypesesion" class="flex justify-center space-x-4 mb-8">
-    
+  <div *ngIf="!selectedtypesesion && !isProcessing" class="flex justify-center space-x-4 mb-8">
     <button
       class="px-6 py-3 text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:outline-none"
       (click)="selectType('fisioterapia')"
@@ -26,37 +26,28 @@
   </div>
 
   <!-- Mensaje de cargando -->
-  <div *ngIf="isLoading" class="text-center text-lg text-gray-600">
+  <div *ngIf="isLoading && !isProcessing" class="text-center text-lg text-gray-600">
     Cargando horarios disponibles...
   </div>
 
   <!-- Horarios disponibles -->
-  <div *ngIf="!selectedHorario && !isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div *ngIf="!selectedHorario && !isLoading && !isProcessing" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
     <div
       *ngFor="let horario of horarios"
       class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border-t-4 border-teal-500 hover:border-teal-600"
     >
-      <!-- Nombre del voluntario -->
       <h4 class="text-xl font-extrabold text-gray-900 mb-1">{{ horario.voluntario_nombre }}</h4>
-  
-      <!-- Especialidad -->
       <p class="text-sm font-medium text-gray-700 mb-4">
         Especialidad: {{ horario.voluntario_especialidad | titlecase }}
       </p>
-  
-      <!-- Horario -->
       <div class="mb-2">
         <p class="text-sm font-bold text-gray-800">Horario:</p>
         <p class="text-sm text-gray-600">{{ horario.hora_inicio }} - {{ horario.hora_fin }}</p>
       </div>
-  
-      <!-- Fecha -->
       <div>
         <p class="text-sm font-bold text-gray-800">Fecha:</p>
         <p class="text-sm text-gray-600">{{ horario.fecha }}</p>
       </div>
-  
-      <!-- Botón de selección -->
       <button
         class="mt-6 w-full py-2 px-4 text-white bg-teal-500 rounded-lg hover:bg-teal-600 focus:outline-none"
         (click)="selectHorario(horario)"
@@ -65,7 +56,9 @@
       </button>
     </div>
   </div>
-  <div *ngIf="selectedHorario" class="max-w-md mx-auto bg-white p-10 rounded-xl shadow-2xl">
+
+  <!-- Detalles de la sesión -->
+  <div *ngIf="selectedHorario && !isProcessing" class="max-w-md mx-auto bg-white p-10 rounded-xl shadow-2xl">
     <h3 class="text-xl font-bold text-gray-900 mb-4">Detalles de la Sesión</h3>
     <div class="space-y-4">
       <p><strong>Tipo de Sesión:</strong> {{ selectedtypesesion | titlecase }}</p>
@@ -90,8 +83,14 @@
     </div>
   </div>
 
+  <!-- Círculo de carga -->
+  <div *ngIf="isProcessing" class="flex justify-center items-center min-h-screen">
+    <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+    <p class="text-lg text-gray-700 ml-4">Creando sesión, por favor espere...</p>
+  </div>
+
   <!-- Mensaje si no hay horarios -->
-  <div *ngIf="selectedtypesesion && !isLoading && horarios.length === 0" class="text-center text-lg text-gray-600">
+  <div *ngIf="selectedtypesesion && !isLoading && !isProcessing && horarios.length === 0" class="text-center text-lg text-gray-600">
     No hay horarios disponibles para {{ selectedtypesesion | titlecase }}.
   </div>
 </div>

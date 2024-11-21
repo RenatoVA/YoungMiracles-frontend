@@ -1,32 +1,42 @@
-
-  <main class="flex-1 p-6">
-    <div class="section mb-8">
-      <h3 class="text-lg font-semibold text-teal-600 mb-4">Sesiones Reservadas</h3>
+<main class="flex-1 p-6">
+  <div class="container mx-auto flex flex-wrap lg:flex-nowrap gap-6">
+    <!-- Sesiones Pendientes -->
+    <div class="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-semibold text-teal-600 mb-4">Sesiones Pendientes</h3>
       <div class="session-list flex flex-col gap-4">
-        <div class="session bg-white p-4 border border-gray-300 rounded-lg shadow-sm" *ngFor="let session of reservedSessions">
+        <div class="session bg-gray-50 p-4 border border-gray-300 rounded-lg shadow-sm" *ngFor="let session of reservedSessions">
           <p class="text-gray-700"><span class="font-semibold">Cliente:</span> {{ session.adultomayorNombre }}</p>
           <p class="text-gray-700"><span class="font-semibold">Fecha:</span> {{ session.fecha }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Hora:</span> {{ session.horario.hora_inicio +" "+session.horario.hora_fin}}</p>
           <p class="text-gray-700"><span class="font-semibold">Estado:</span> {{ session.estado }}</p>
           <div class="flex gap-4 mt-2">
-            <button class="btn accept-btn bg-teal-600 text-white px-3 py-1 rounded-md hover:bg-teal-700" >Confirmar</button>
-            <button class="btn reject-btn bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600" >Cancelar</button>
+            <button class="btn accept-btn bg-teal-600 text-white px-3 py-1 rounded-md hover:bg-teal-700"
+            (click)="updateSessionState(session.id, 'completado')"
+            >Confirmar</button>
+            <button class="btn reject-btn bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+            (click)="updateSessionState(session.id, 'cancelado')"
+            >Cancelar</button>
           </div>
         </div>
       </div>
     </div>
-  
-    <!-- sección de reserva -->
-    <div class="section mb-8">
-      <h3 class="text-lg font-semibold text-teal-600 mb-4">Sesiones Pasadas</h3>
-      <div class="request-list flex flex-col gap-4">
-        <div class="request bg-white p-4 border border-gray-300 rounded-lg shadow-sm" *ngFor="let session of pastSessions">
-          <p class="text-gray-700"><span class="font-semibold">Cliente:</span> {{ session.adultomayorNombre }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Fecha:</span> {{ session.fecha }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Estado:</span> {{ session.estado }}</p>
 
+    <!-- Métricas -->
+    <div class="w-full lg:w-1/3 bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-semibold text-teal-600 mb-4">Métricas Personales</h3>
+      <div class="metrics space-y-4">
+        <div>
+          <p><span class="font-semibold">Total de Sesiones:</span> {{ reporte?.totalSesiones }}</p>
+          <p><span class="font-semibold">Horas Trabajadas:</span> {{ reporte?.horasTrabajadas }} horas</p>
+          <p><span class="font-semibold">Última Sesión:</span> {{ reporte?.ultimaSesion || 'N/A' }}</p>
+          <p><span class="font-semibold">Tasa de Cancelación:</span> {{ reporte?.tasaCancelacion | number:'1.2-2' }}%</p>
+        </div>
+
+        <!-- Gráfico de Pastel -->
+        <div>
+          <canvas id="metricsChart" width="200" height="200"></canvas>
         </div>
       </div>
     </div>
-  </main>
-
-
+  </div>
+</main>

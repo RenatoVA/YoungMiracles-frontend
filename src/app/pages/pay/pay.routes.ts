@@ -10,6 +10,7 @@ export const payRoutes: Routes = [
     children: [
       { path: 'validate', component: ValidatePurchaseComponent },
       { path: ':id', component: PurchaseComponent }
+
     ],
   },
 ];

@@ -10,6 +10,7 @@ import { RegisterAdultResponse } from '../../shared/models/register-adulto-respo
 import { RegisterVoluntarioRequest } from '../../shared/models/register-voluntario-request.model';
 import { RegisterVoluntarioResponse } from '../../shared/models/register-voluntario-response.model';
 import { StorageService } from './storage.service';
+import { UpdateUsuario } from '../../shared/models/update-usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ import { StorageService } from './storage.service';
 export class AuthService {
 
   private baseURL = `${environment.apiUrl}/auth`;
+  private updateURL = `${environment.apiUrl}/usuarios`;
   private http = inject(HttpClient);
   private storageService = inject(StorageService);
   private router = inject(Router);
@@ -53,5 +55,8 @@ export class AuthService {
   getUserRole(): string | null {
     const authData = this.storageService.getAuthData();
     return authData ? authData.role : null;
+  }
+  updateUser(user: UpdateUsuario, id:number): Observable<any> {
+    return this.http.put<UpdateUsuario>(`${this.updateURL}/${id}`,user);
   }
 }

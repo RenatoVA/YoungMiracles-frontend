@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../enviroments/environment';
 import { SesionResponse } from '../../shared/models/sesion-response.model';
 import { SesionRequest } from '../../shared/models/sesion-request.model';
+import { ReporteSesionesResponse } from '../../shared/models/sesiones-reporte-response.model';
 @Injectable({
     providedIn: 'root'
 })
@@ -27,5 +28,9 @@ export class SesionService  {
     }
     updatestateSession(sessiondata:any): Observable<any> {
         return this.http.patch(`${this.apiUrl}/state`,sessiondata);
+    }
+
+    reporteSesiones(id:number): Observable<ReporteSesionesResponse> {
+        return this.http.get<ReporteSesionesResponse>(`${this.apiUrl}/reporte/${id}`);
     }
 }

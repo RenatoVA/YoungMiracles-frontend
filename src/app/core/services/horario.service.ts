@@ -23,4 +23,12 @@ export class HorarioService {
     return this.http.get<HorarioResponse[]>(`${this.baseURL}/especialidad/${especialidad}`);
   }
 
+  gethorariosByVoluntario(voluntarioId: number): Observable<HorarioResponse[]> {
+    return this.http.get<HorarioResponse[]>(`${this.baseURL}/voluntario/${voluntarioId}`);
+  }
+
+  deleteHorario(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseURL}/${id}`);
+  }
+
 }
